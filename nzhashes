@@ -1,0 +1,68 @@
+@@ -0,0 +1,67 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+  <title>Google Maps Multiple Markers</title> 
+  <script src="http://maps.google.com/maps/api/js?key=AIzaSyD3weurNK33fOlKCfokaTQWz6NKN7z8nT4&sensor=false"></script>
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.1.min.js"></script>
+</head> 
+<body>
+  <div id="map" style="width: 500px; height: 400px;"></div>
+
+  <script type="text/javascript">
+    var locations = [
+      ['<h3>Bay of Islands</h3>' +
+        '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>', -35.165034, 174.162854, 5],
+      ['<h3>Whangarei</h3>' +
+        '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>', -35.696121, 174.300132, 4],
+      ['<h3>Mangawhai Heads</h3>' +
+        '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>', -36.113032, 174.559536, 3],
+      ['<h3>Auckland Hussies</h3>' +
+        '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>', -36.852924, 174.750234, 2],
+      ['<h3>Auckland</h3>' +
+        '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>', -36.868273, 174.711450, 1]
+    ];
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 8,
+      center: new google.maps.LatLng(-40.9006, 174.8860),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+    var markers = new Array();
+
+    for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });
+
+      markers.push(marker);
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+
+    function AutoCenter() {
+      //  Create a new viewpoint bound
+      var bounds = new google.maps.LatLngBounds();
+      //  Go through each...
+      $.each(markers, function (index, marker) {
+      bounds.extend(marker.position);
+      });
+      //  Fit these bounds to the map
+      map.fitBounds(bounds);
+    }
+    AutoCenter();
+
+  </script> 
+</body>
+</html>
